@@ -42,9 +42,12 @@ It acts as an isolation from the outside public network.
 
 a. Select "VPC with a Single Public Subnet"  
 b. Fill in the parameters  
-![VPC settings](https://github.com/tedanyao/BOSH-tutorial/blob/master/resources/create-vpc.png)
+![VPC settings](https://github.com/tedanyao/BOSH-tutorial/blob/master/resources/create-vpc.png)  
 c. Create an elastic IP  
 It is used as the entry point for this VPC.
 
 d. Create a key pair
-Create a key pair (*.pem) in this account for an user.
+Create a key pair (*.pem) in this account for an user.  
+
+e. Create a security group
+
