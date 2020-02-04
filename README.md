@@ -8,4 +8,6 @@ https://ultimateguidetobosh.com/networking/
 
 
 # Architecture
-![architecture]()
+![architecture](https://github.com/tedanyao/BOSH-tutorial/blob/master/resources/aws-jumpbox-public-private-subnets.png)
+
+
