@@ -21,6 +21,13 @@ https://bosh.io/docs/init-external-ip/
 A VM that acts as a single access point for the Director and deployed VMs. For resilience, there should be more than one jump box. Allowing access through jump boxes and disabling direct access to the other VMs is a common security measure.
 
 # Prerequisite
+1. Install AWS CLI
+https://fabianlee.org/2018/12/16/aws-installing-the-aws-cli-on-ubuntu/
+
+2. Install BOSH CLI v2
+https://bosh.io/docs/cli-v2-install/
+
+# AWS setup  
 1. Create an Amazon IAM user  
 
 The IAM user credential allows you to access AWS.
@@ -28,12 +35,9 @@ a. Set the policy with full EC2 access.
 b. Create an new user with this policy.
 c. Get the Access Key and Secret Access Key for later use.
 
-ps. you can also use an root user, but it is not as safe.
+ps. you can also use a root user, but it is not as safe.
 
-2. Install AWS CLI
-https://fabianlee.org/2018/12/16/aws-installing-the-aws-cli-on-ubuntu/
-
-3. Install BOSH CLI v2
-https://bosh.io/docs/cli-v2-install/
-
+2. Create a VPC (Virtual Private Cloud)  
+a. Select "VPC with a Single Public Subnet"
+b. 
 
