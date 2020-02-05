@@ -5,13 +5,14 @@ https://fabianlee.org/2019/01/12/cloudfoundry-installing-a-bosh-director-on-aws/
 
 # AWS setup
 1. Create an IAM user with the policy in "./aws-iam-policy.json"
-2. Install AWS CLI
+2. Install AWS CLI  
   a. https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html  
   b. install  
   ```
   $ curl "https://d1vvhvl2y92vvt.cloudfront.net/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
   $ sudo installer -pkg AWSCLIV2.pkg -target /
   ```
+  
   c. check status
   ```
   $ which aws2
