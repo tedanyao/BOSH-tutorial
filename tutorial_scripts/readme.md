@@ -62,8 +62,9 @@ bosh vms
 bosh upload-stemcell --sha1 6b3127103e012bd5b1a6d84009f05817ec433bb2 \
   https://bosh.io/d/stemcells/bosh-aws-xen-hvm-ubuntu-xenial-go_agent?v=621.51
   
-# get ZooKeeper manifest
-wget xxxx
+# get ZooKeeper manifest, for ubuntu-xenial 621.51
+wget https://github.com/tedanyao/BOSH-tutorial/blob/master/tutorial_scripts/zookeeper.yml
+
 # deploy 3 cluster instance of Apache zookeeper
 bosh -d zookeeper deploy -v zookeeper_instances=3 zookeeper.yml
 
