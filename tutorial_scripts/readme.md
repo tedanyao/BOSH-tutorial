@@ -116,3 +116,4 @@ bosh delete-stemcell bosh-warden-boshlite-ubuntu-trusty-go_agent/3586.60
 # delete BOSH Director
 ./do-bosh delete-env
 ```
+

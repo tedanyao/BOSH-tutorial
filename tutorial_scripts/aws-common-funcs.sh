@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 # If last call to aws failed, then fatal exit
 function checkForAWSError() {
@@ -254,8 +254,12 @@ function updateSecurityGroupRules() {
   rulesName=$4
 
   # assign specific array
-  tmp=$rulesName[@]
-  ingressRules=( "${!tmp}" )
+  #echo "NEW! ${rulesName[@]}"
+  #echo "the array contains ${#rulesName[@]} elements"
+  declare -a ingressRules=("${rulesName[@]}")
+  echo "NEW! ${ingressRules[@]}"
+  echo "the array contains ${#ingressRules[@]} elements"
+  #ingressRules=( "${!tmp}" )
   #if [ "$rulesName" == "bosh" ]; then
   #  ingressRules=( "${BOSH_INGRESS_RULES[@]}" )
   #elif [ "$rulesName" == "jumpbox" ]; then
@@ -274,6 +278,7 @@ function updateSecurityGroupRules() {
   IFS=$'\t'
   for existingRule in $existingRules; do
     #echo "adding existing rule '$existingRule' to map"
+	echo "existing rules: $existingRule"
     rulesMap[$existingRule]=$existingRule
   done 
 
@@ -288,16 +293,19 @@ function updateSecurityGroupRules() {
     IFS=',' read -r -a field <<< "$rule"
     IFS=$OLDIFS
 
+	echo "RULE: $rule"
     # name the fields to make it easier to work with
     rdesc=${field[0]}
     rproto=${field[1]}
     rport1=${field[2]}
     rport2=${field[3]}
     rsource=${field[4]}
+	echo "RULEMAP: ${rulesMap}"
 
-    if [ -z  "${rulesMap[$rdesc]}" ]; then
+    if [ -z  "${rulesMap["$rdesc"]}" ]; then
       echo "Need to create rule '$rdesc' with source '$rsource' because it does not exist on security group"
       # new rule takes this form
+	  echo "HERE!"
       if [[ "$rsource" =~ '**groupId' ]]; then
         # special marker for groupId gets replaced here
         #echo "rsource orig: $rsource"
@@ -310,7 +318,7 @@ function updateSecurityGroupRules() {
         if [ "icmp" == "$rproto" ]; then 
           rangeStr="${rport1}"
         fi
-
+		echo "Here1!!!!!!! $rproto $rport1 $rport2 $rdesc $rsource"
         ruleString="IpProtocol=$rproto,FromPort=$rport1,ToPort=$rport2,UserIdGroupPairs=[{Description=\"$rdesc\",GroupId=\"$rsource\"}]"
         aws ec2 authorize-security-group-ingress --group-id $groupId --output text --ip-permissions $ruleString
 
@@ -322,6 +330,7 @@ function updateSecurityGroupRules() {
 
       else
 
+		echo "Here2!!!!!!! $rproto $rport1 $rport2 $rdesc $rsource"
         ruleString="IpProtocol=$rproto,FromPort=$rport1,ToPort=$rport2,IpRanges=[{CidrIp=$rsource,Description=\"$rdesc\"}]"
         aws ec2 authorize-security-group-ingress --group-id $groupId --output text --ip-permissions $ruleString
 
@@ -345,17 +354,20 @@ function updateSecurityGroupRules() {
 
 # show ingress rule array for private subnet
 function showIngressRuleArray() {
-  rulesName=$1
-  echo "hello!!$1"
+  rulesName=("$@")
   # assign specific rules array
-  tmp=$rulesName[@]
-  ingressRules=( "${!tmp}" )
+  declare -a tmp
+  #tmp=$({rulesName[@]})
+  #echo "hello1!! ${tmp[@]}"
+  ingressRules=${rulesName[@]}
 
+  #echo "hello2!! ${ingressRules[@]}"
+  #echo "the array contains ${#rulesName[@]} elements"
   OLDIFS=$IFS
-  IFS='
-'
-  for rule in ${ingressRules[@]}; do
-
+  IFS=''
+  for rule in ${rulesName[@]}
+  do
+    #echo "$rule"
     # split rule into fields
     IFS=',' read -r -a field <<< "$rule"
     rdesc=${field[0]}
@@ -365,7 +377,7 @@ function showIngressRuleArray() {
     # 4th field and any after
     rsource=${field[4]}
  
-    #echo "PREDEFINED RULE: $rdesc - $rproto - $rport1 - $rport2 - $rsource"
+    echo "PREDEFINED RULE: $rdesc - $rproto - $rport1 - $rport2 - $rsource"
   done
 
   IFS=$OLDIFS

@@ -74,19 +74,19 @@ echo "startupScript=$startupScript"
 # ingress rules for subnets
 # fields: description,protocol,from port,to port range,source
 DMZ_INGRESS_RULES=(
- "SSH from internet,tcp,22,22,0.0.0.0/0"
- "Internal TCP,tcp,0,65535,**groupIdSelf**"
- "Internal UDP,udp,0,65535,**groupIdSelf**"
- "Internal ICMP,icmp,-1,-1,**groupIdSelf**"
+ "SSH_from_internet,tcp,22,22,0.0.0.0/0"
+ "Internal_TCP,tcp,0,65535,**groupIdSelf**"
+ "Internal_UDP,udp,0,65535,**groupIdSelf**"
+ "Internal_ICMP,icmp,-1,-1,**groupIdSelf**"
 )
 BOSH_INGRESS_RULES=(
- "SSH from DMZ,tcp,22,22,**groupIdOther**"
- "BOSH Agent from DMZ,tcp,6868,6868,**groupIdOther**"
- "BOSH Director from DMZ,tcp,25555,25555,**groupIdOther**"
- "ICMP from DMZ,icmp,-1,-1,**groupIdOther**"
- "Internal TCP,tcp,0,65535,**groupIdSelf**"
- "Internal UDP,udp,0,65535,**groupIdSelf**"
- "Internal ICMP,icmp,-1,-1,**groupIdSelf**"
+ "SSH_from_DMZ,tcp,22,22,**groupIdOther**"
+ "BOSH_Agent_from_DMZ,tcp,6868,6868,**groupIdOther**"
+ "BOSH_Director_from_DMZ,tcp,25555,25555,**groupIdOther**"
+ "ICMP_from_DMZ,icmp,-1,-1,**groupIdOther**"
+ "Internal_TCP,tcp,0,65535,**groupIdSelf**"
+ "Internal_UDP,udp,0,65535,**groupIdSelf**"
+ "Internal_ICMP,icmp,-1,-1,**groupIdSelf**"
 )
 
 
@@ -211,14 +211,17 @@ echo "Moving forward with security group for public Jumpbox subnet $securityGrou
 
 echo
 echo "=== INGRESS RULES FOR BOSH PRIVATE SUBNET  ============="
-showIngressRuleArray "$BOSH_INGRESS_RULES"
-updateSecurityGroupRules $vpcId $securityGroupBoshId $securityGroupDMZId "$BOSH_INGRESS_RULES"
+echo "here it is! ${BOSH_INGRESS_RULES[@]}"
+  echo "the array contains ${#BOSH_INGRESS_RULES[@]} elements"
+
+showIngressRuleArray "${BOSH_INGRESS_RULES[@]}"
+updateSecurityGroupRules $vpcId $securityGroupBoshId $securityGroupDMZId "${BOSH_INGRESS_RULES[@]}"
 
 
 echo
 echo "=== INGRESS RULES FOR JUMPBOX PUBLIC SUBNET  ============="
-showIngressRuleArray "$DMZ_INGRESS_RULES"
-updateSecurityGroupRules $vpcId $securityGroupDMZId $securityGroupBoshId "$DMZ_INGRESS_RULES"
+showIngressRuleArray "${DMZ_INGRESS_RULES[@]}"
+updateSecurityGroupRules $vpcId $securityGroupDMZId $securityGroupBoshId "${DMZ_INGRESS_RULES[@]}"
 
 
 echo
@@ -398,6 +401,11 @@ echo "Moving forward with '$vpcName-jumpbox' associated to IP $jbIPAddress"
 
 echo
 echo "=== TEST SSH TO JUMPBOX ============="
+
+echo "change ${keypairName}.pem to permission 400"
+chmod 400 "${keypairName}.pem"
+
+
 sshUser="ubuntu"
 # wait for ssh listener on jumpbox
 while true; do
@@ -415,7 +423,7 @@ if [ $createdJumpbox -eq 1 ]; then
   scp -i "${keypairName}.pem" ${keypairName}.pem ${sshUser}@${jbIPAddress}:/home/ubuntu/.
 fi
 # copy over scripts needed to remote jumpbox
-scp -i "${keypairName}.pem" {bosh.pem,jumpbox-startup.sh,do-bosh.sh,set-director-passwd.yml,bosh-alias.sh,update-cloud-config.sh} ${sshUser}@${jbIPAddress}:/home/ubuntu/.
+scp -i "${keypairName}.pem" {bosh.pem,jumpbox-startup.sh,do-bosh.sh,bosh-alias.sh,update-cloud-config.sh} ${sshUser}@${jbIPAddress}:/home/ubuntu/.
 # chmod of key and remote scripts
 ssh -i "${keypairName}.pem" ${sshUser}@${jbIPAddress} "cd /home/ubuntu;chmod 400 ${keypairName}.pem;chmod ugo+r+x *.sh"
 
@@ -423,8 +431,9 @@ ssh -i "${keypairName}.pem" ${sshUser}@${jbIPAddress} "cd /home/ubuntu;chmod 400
 echo
 echo "=== DONE ============="
 echo "for jumpbox access: ssh -i ${keypairName}.pem ${sshUser}@${jbIPAddress}"
-
-
+echo "ssh -i ${keypairName}.pem ${sshUser}@${jbIPAddress}" > ./go
+chmod +x ./go
+echo "or source ./go"
 
 
 
