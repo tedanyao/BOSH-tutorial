@@ -11,4 +11,6 @@ If there is a sub-script inside the main script:
 BASH_SOURCE is the input array.  
 ## ${BASH_SOURCE[0]} vs. $BASH_SOURCE vs. $0
 1. __$BASH_SOURCE__ is more recommended.  
-2. $0 is not correct when using "source".  
+2. $0 is not correct when using "source". $0 returns the name of the process. So if you use "source", it refers to the current bash shell (-bash). And if you use "sh", it refers to the filename correctly because the subshell is created from that file.  
+
+
