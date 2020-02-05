@@ -254,10 +254,10 @@ function updateSecurityGroupRules() {
   rulesName=$4
 
   # assign specific array
-  #echo "NEW! ${rulesName[@]}"
+  #echo "${rulesName[@]}"
   #echo "the array contains ${#rulesName[@]} elements"
   declare -a ingressRules=("${rulesName[@]}")
-  echo "NEW! ${ingressRules[@]}"
+  echo "${ingressRules[@]}"
   echo "the array contains ${#ingressRules[@]} elements"
   #ingressRules=( "${!tmp}" )
   #if [ "$rulesName" == "bosh" ]; then
@@ -293,14 +293,14 @@ function updateSecurityGroupRules() {
     IFS=',' read -r -a field <<< "$rule"
     IFS=$OLDIFS
 
-	echo "RULE: $rule"
+	#echo "RULE: $rule"
     # name the fields to make it easier to work with
     rdesc=${field[0]}
     rproto=${field[1]}
     rport1=${field[2]}
     rport2=${field[3]}
     rsource=${field[4]}
-	echo "RULEMAP: ${rulesMap}"
+	#echo "RULEMAP: ${rulesMap}"
 
     if [ -z  "${rulesMap["$rdesc"]}" ]; then
       echo "Need to create rule '$rdesc' with source '$rsource' because it does not exist on security group"
@@ -357,12 +357,7 @@ function showIngressRuleArray() {
   rulesName=("$@")
   # assign specific rules array
   declare -a tmp
-  #tmp=$({rulesName[@]})
-  #echo "hello1!! ${tmp[@]}"
   ingressRules=${rulesName[@]}
-
-  #echo "hello2!! ${ingressRules[@]}"
-  #echo "the array contains ${#rulesName[@]} elements"
   OLDIFS=$IFS
   IFS=''
   for rule in ${rulesName[@]}
