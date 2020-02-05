@@ -15,4 +15,4 @@ BASH_SOURCE is the input array.
 
 # Dirname
 dirname returns the __relative__ file path.  
-A common script for getting the file location is ```DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"```
+A common script for getting the file location (without filename) is ```DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"```
