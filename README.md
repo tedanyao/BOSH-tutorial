@@ -96,3 +96,6 @@ bosh -e bosh-1 env
 # Deploy an application through jumpbox
 1. SSH into jumpbox  
 2. run ```bosh deploy ...``` to deploy an application with *.yml  
+
+* check the OS version of the Director, and find the same version of that application; otherwise it will hang...  
+
