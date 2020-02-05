@@ -305,7 +305,7 @@ function updateSecurityGroupRules() {
     if [ -z  "${rulesMap["$rdesc"]}" ]; then
       echo "Need to create rule '$rdesc' with source '$rsource' because it does not exist on security group"
       # new rule takes this form
-	  echo "HERE!"
+	  
       if [[ "$rsource" =~ '**groupId' ]]; then
         # special marker for groupId gets replaced here
         #echo "rsource orig: $rsource"
@@ -318,7 +318,7 @@ function updateSecurityGroupRules() {
         if [ "icmp" == "$rproto" ]; then 
           rangeStr="${rport1}"
         fi
-		echo "Here1!!!!!!! $rproto $rport1 $rport2 $rdesc $rsource"
+		
         ruleString="IpProtocol=$rproto,FromPort=$rport1,ToPort=$rport2,UserIdGroupPairs=[{Description=\"$rdesc\",GroupId=\"$rsource\"}]"
         aws ec2 authorize-security-group-ingress --group-id $groupId --output text --ip-permissions $ruleString
 
@@ -330,7 +330,7 @@ function updateSecurityGroupRules() {
 
       else
 
-		echo "Here2!!!!!!! $rproto $rport1 $rport2 $rdesc $rsource"
+		
         ruleString="IpProtocol=$rproto,FromPort=$rport1,ToPort=$rport2,IpRanges=[{CidrIp=$rsource,Description=\"$rdesc\"}]"
         aws ec2 authorize-security-group-ingress --group-id $groupId --output text --ip-permissions $ruleString
 
