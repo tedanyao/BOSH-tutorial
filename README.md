@@ -50,4 +50,6 @@ d. Create a key pair
 Create a key pair (*.pem) in this account for an user.  
 
 e. Create a security group
+A security group under an VPC is like a separate firewall. Inbound & outbound rules are set in a security group. For example, one can set TCP with only port 3000 allowed.
+
 
