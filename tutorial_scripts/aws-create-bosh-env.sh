@@ -303,8 +303,8 @@ mv bosh-cli-5.4.0-linux-amd64 bosh
 chmod ugo+rx bosh
 sudo mv bosh /usr/local/bin/.
 
-git clone https://github.com/cloudfoundry/bosh-deployment
-sudo chown -R ubuntu:ubuntu bosh-deployment
+# git clone https://github.com/cloudfoundry/bosh-deployment
+# sudo chown -R ubuntu:ubuntu bosh-deployment
 
 echo ending script >> /tmp/jumpbox-startup.sh
 EOL
@@ -423,7 +423,7 @@ if [ $createdJumpbox -eq 1 ]; then
   scp -i "${keypairName}.pem" ${keypairName}.pem ${sshUser}@${jbIPAddress}:/home/ubuntu/.
 fi
 # copy over scripts needed to remote jumpbox
-scp -i "${keypairName}.pem" {bosh.pem,jumpbox-startup.sh,do-bosh.sh,bosh-alias.sh,update-cloud-config.sh} ${sshUser}@${jbIPAddress}:/home/ubuntu/.
+scp -r -i "${keypairName}.pem" {bosh.pem,jumpbox-startup.sh,do-bosh.sh,bosh-alias.sh,update-cloud-config.sh,bosh-deployment} ${sshUser}@${jbIPAddress}:/home/ubuntu/.
 # chmod of key and remote scripts
 ssh -i "${keypairName}.pem" ${sshUser}@${jbIPAddress} "cd /home/ubuntu;chmod 400 ${keypairName}.pem;chmod ugo+r+x *.sh"
 
