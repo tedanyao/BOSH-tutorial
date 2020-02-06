@@ -52,7 +52,10 @@ Create a key pair (*.pem) in this account for an user.
 e. Create a security group
 A security group under an VPC is like a separate firewall. Inbound & outbound rules are set in a security group. For example, one can set TCP with only port 3000 allowed.
 
-# Create a jumpbox server
+# Create a jumpbox server (better to have)
+If using a jumpbox server, we can first login to jumpbox and then deploy BOSH director on the same VPC.  
+Otherwise, we should expose the BOSH director's ip address by assiging a public ip, so that the client outside the VPC can access it.  
+https://bosh.io/docs/init-external-ip/
 
 # Deploy BOSH Director
 1. Clone Director templates
