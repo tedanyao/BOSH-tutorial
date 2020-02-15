@@ -1,11 +1,26 @@
 # Difference between "source", ".", "sh", "bash", "./"
 If there is a sub-script inside the main script:  
 1. Copy code to the main shell:  
-"source" == "."  
+* ```source xxx```, ```. ./xxx```  
 
 2. Call sub-shell to execute:  
-"sh" == "bash"  
-"./" need the file to be executable (+x)  
+* ```sh xxx, bash xxx, ./xxx```   
+* "sh" is equal to "bash"  
+* "./" need the file to be executable (+x)  
+
+
+### ./ opens up a new shell
+### 'source' execute with current shell
+```console
+vagrant@Security:~$ cat aa
+export PATH=/home/vagrant:$PATH
+vagrant@Security:~$ ./aa
+vagrant@Security:~$ echo $PATH
+/usr/local/sbin:...
+vagrant@Security:~$ source ./aa
+vagrant@Security:~$ echo $PATH
+/home/vagrant:/usr/local/sbin:...
+```
 
 # BASH_SOURCE
 BASH_SOURCE is the input array.  
